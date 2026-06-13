@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reverb – Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Cabinet+Grotesk:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #05080f;
+      --surface: #0b0f1a;
+      --surface2: #111827;
+      --surface3: #161e2e;
+      --border: rgba(255,255,255,0.07);
+      --border2: rgba(255,255,255,0.11);
+      --accent: #00d4aa;
+      --accent2: #00b894;
+      --accent-dim: rgba(0,212,170,0.08);
+      --white: #f0f4f8;
+      --gray: #7a8899;
+      --gray2: #a0adb8;
+      --red: #f0566a;
+      --red-dim: rgba(240,86,106,0.09);
+      --green: #10d48e;
+      --green-dim: rgba(16,212,142,0.09);
+      --orange: #f59e0b;
+      --orange-dim: rgba(245,158,11,0.09);
+      --radius: 9px;
+      --radius-lg: 13px;
+      --transition: .18s cubic-bezier(.4,0,.2,1);
+    }
+    body { background: var(--bg); color: var(--white); font-family: 'Cabinet Grotesk', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .signup-container { max-width: 480px; width: 90%; background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 40px; }
+    .logo { text-align: center; margin-bottom: 32px; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 700; }
+    .logo img { height: 40px; width: auto; }
+    h1 { font-size: 28px; margin-bottom: 8px; text-align: center; }
+    .sub { text-align: center; color: var(--gray); margin-bottom: 32px; font-size: 14px; }
+    .input-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; }
+    input, textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; color: var(--white); font-family: 'Cabinet Grotesk', sans-serif; transition: var(--transition); }
+    input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+    textarea { resize: vertical; min-height: 80px; }
+    .btn-primary { width: 100%; background: var(--accent); color: var(--bg); border: none; padding: 12px; border-radius: var(--radius); font-weight: 600; font-size: 16px; cursor: pointer; transition: var(--transition); margin-top: 8px; }
+    .btn-primary:hover { background: var(--accent2); }
+    .footer-links { text-align: center; margin-top: 24px; font-size: 14px; color: var(--gray); }
+    .footer-links a { color: var(--accent); text-decoration: none; }
+    .footer-links a:hover { text-decoration: underline; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surface3); color: var(--white); padding: 12px 24px; border-radius: var(--radius); font-size: 14px; z-index: 1000; transition: transform 0.3s ease; border: 1px solid var(--border); }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast-error { border-left: 3px solid var(--red); }
+    .toast-success { border-left: 3px solid var(--green); }
+    .info-text { font-size: 12px; color: var(--gray); margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+  <div class="signup-container">
+    <div class="logo">
+      <img src="/images/reverb.png" alt="Reverb" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%2300d4aa\'/%3E%3Ctext x=\'50\' y=\'68\' font-size=\'48\' text-anchor=\'middle\' fill=\'%2305080f\' font-family=\'monospace\'%3ER%3C/text%3E%3C/svg%3E'">
+      <span>Reverb</span>
+    </div>
+    <h1>Join Reverb</h1>
+    <div class="sub">Create your account</div>
+    <form id="signupForm">
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" id="name" required autocomplete="name">
+      </div>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" id="email" required autocomplete="email">
+        <div class="info-text">We'll never share your email</div>
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" required autocomplete="new-password">
+        <div class="info-text">Must be at least 6 characters</div>
+      </div>
+      <div class="input-group">
+        <label>Bio (optional)</label>
+        <textarea id="bio" placeholder="Tell us about yourself..."></textarea>
+      </div>
+      <button type="submit" class="btn-primary">Create Account</button>
+    </form>
+    <div class="footer-links">
+      Already have an account? <a href="/login.html">Sign in</a>
+    </div>
+  </div>
+
+  <script>
+    function generateDeviceFingerprint() {
+      const data = [
+        navigator.userAgent,
+        screen.width + 'x' + screen.height,
+        screen.colorDepth,
+        new Date().getTimezoneOffset(),
+        navigator.language,
+        !!navigator.hardwareConcurrency
+      ].join('|');
+      async function sha256(msg) {
+        const encoder = new TextEncoder();
+        const hash = await crypto.subtle.digest('SHA-256', encoder.encode(msg));
+        return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+      return sha256(data);
+    }
+
+    function showToast(msg, type='success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast toast-${type} show`;
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    async function api(method, path, body) {
+      try {
+        const opts = { method, headers: { 'Content-Type': 'application/json' } };
+        if (body) opts.body = JSON.stringify(body);
+        const res = await fetch('/api' + path, opts);
+        const data = await res.json();
+        return { ok: res.ok, data, status: res.status };
+      } catch(e) {
+        return { ok: false, data: { error: 'Network error. Please try again.' }, status: 0 };
+      }
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const bio = document.getElementById('bio').value.trim();
+
+      if (!name || !email || !password) {
+        showToast('Please fill in all required fields', 'error');
+        return;
+      }
+      if (password.length < 6) {
+        showToast('Password must be at least 6 characters', 'error');
+        return;
+      }
+
+      const fingerprint = await generateDeviceFingerprint();
+      const res = await api('POST', '/auth/register', { name, email, password, bio, fingerprint });
+
+      if (res.ok) {
+        showToast('Account created! Awaiting admin approval.', 'success');
+        setTimeout(() => { window.location.href = '/login.html'; }, 2000);
+      } else {
+        showToast(res.data.error || 'Registration failed', 'error');
+      }
+    });
+
+    // Redirect if already logged in
+    const token = localStorage.getItem('reverb_token');
+    if (token) {
+      window.location.href = '/';
+    }
+  </script>
+</body>
+</html>
