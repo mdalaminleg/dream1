@@ -35,77 +35,121 @@
     .logo { display: flex; align-items: center; gap: 12px; font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; }
     .logo img { height: 32px; width: auto; }
     .header-actions { display: flex; gap: 16px; align-items: center; }
-    .icon-btn { background: none; border: none; cursor: pointer; padding: 8px; border-radius: var(--radius); transition: var(--transition); display: flex; align-items: center; justify-content: center; }
-    .icon-btn:hover { background: var(--surface2); }
+    .icon-btn { background: none; border: none; cursor: pointer; padding: 8px; border-radius: var(--radius); transition: var(--transition); display: flex; align-items: center; justify-content: center; color: var(--gray); }
+    .icon-btn:hover { background: var(--surface2); color: var(--white); }
     .avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
     .sidebar { position: fixed; top: 64px; left: -260px; width: 260px; height: calc(100% - 64px); background: var(--surface); border-right: 1px solid var(--border); transition: left 0.3s ease; z-index: 99; overflow-y: auto; }
     .sidebar.open { left: 0; }
     .sidebar-nav { padding: 24px; display: flex; flex-direction: column; gap: 8px; }
-    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius); color: var(--gray); text-decoration: none; transition: var(--transition); background: none; width: 100%; text-align: left; font-size: 16px; cursor: pointer; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius); color: var(--gray); text-decoration: none; transition: var(--transition); }
     .nav-item:hover, .nav-item.active { background: var(--surface2); color: var(--white); }
     .nav-item svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
     .main { margin-left: 0; padding: 24px; transition: margin-left 0.3s ease; max-width: 800px; margin: 0 auto; width: 100%; }
     @media (min-width: 860px) { .sidebar { left: 0; } .main { margin-left: 260px; } .hamburger { display: none; } }
-    .profile-header { background: var(--surface2); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 24px; text-align: center; }
-    .profile-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; }
-    .profile-name { font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    
+    .profile-header { background: var(--surface2); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 24px; text-align: center; position: relative; }
+    .profile-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 3px solid var(--accent); cursor: pointer; transition: var(--transition); }
+    .profile-avatar:hover { opacity: 0.8; transform: scale(1.02); }
+    .camera-overlay { position: relative; display: inline-block; }
+    .camera-icon { position: absolute; bottom: 10px; right: 10px; background: var(--accent); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); }
+    .camera-icon:hover { transform: scale(1.1); }
+    .profile-name { font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
     .verified-badge { display: inline-flex; align-items: center; justify-content: center; background: var(--accent); border-radius: 50%; width: 24px; height: 24px; }
     .verified-badge svg { width: 16px; height: 16px; fill: var(--bg); }
-    .profile-bio { color: var(--gray2); margin: 12px 0; }
-    .mood-section { margin: 20px 0; }
+    .profile-bio { color: var(--gray2); margin: 16px 0; font-size: 16px; }
+    .profile-meta { display: flex; justify-content: center; gap: 32px; margin: 20px 0; }
+    .meta-item { text-align: center; }
+    .meta-number { font-size: 24px; font-weight: 700; color: var(--accent); }
+    .meta-label { font-size: 12px; color: var(--gray); }
+    .edit-btn { background: var(--surface3); border: 1px solid var(--border); color: var(--white); padding: 10px 24px; border-radius: var(--radius); cursor: pointer; margin-top: 16px; font-size: 14px; transition: var(--transition); }
+    .edit-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .follow-btn { background: var(--accent); color: var(--bg); border: none; padding: 10px 24px; border-radius: var(--radius); font-weight: 600; cursor: pointer; margin-top: 16px; transition: var(--transition); }
+    .follow-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+    .mood-section { margin: 24px 0; }
     .mood-selector { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
     .mood-btn { background: var(--surface3); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 16px; cursor: pointer; transition: var(--transition); font-size: 20px; }
+    .mood-btn:hover { background: var(--surface); transform: translateY(-2px); }
     .mood-btn.active { background: var(--accent); border-color: var(--accent); }
-    .edit-btn { background: var(--surface3); border: 1px solid var(--border); color: var(--white); padding: 8px 20px; border-radius: var(--radius); cursor: pointer; margin-top: 16px; }
-    .post-card { background: var(--surface2); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; border: 1px solid var(--border); }
+    
+    .post-card { background: var(--surface2); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; border: 1px solid var(--border); transition: var(--transition); }
+    .post-card:hover { border-color: var(--accent-dim); }
     .post-header { display: flex; gap: 12px; margin-bottom: 16px; }
-    .post-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+    .post-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; cursor: pointer; }
     .post-info { flex: 1; }
-    .post-name { font-weight: 600; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .post-name { font-weight: 600; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; cursor: pointer; }
+    .post-name:hover { color: var(--accent); }
     .post-time { font-size: 12px; color: var(--gray); margin-top: 4px; }
-    .post-content { margin-bottom: 16px; line-height: 1.5; }
-    .post-image { max-width: 100%; border-radius: var(--radius); margin-top: 12px; }
+    .post-content { margin-bottom: 16px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+    .post-image { max-width: 100%; border-radius: var(--radius); margin-top: 12px; cursor: pointer; }
     .post-actions { display: flex; gap: 24px; padding-top: 12px; border-top: 1px solid var(--border); }
     .action-btn { background: none; border: none; color: var(--gray); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 14px; transition: var(--transition); padding: 6px 12px; border-radius: var(--radius); }
     .action-btn:hover { background: var(--surface3); color: var(--white); }
+    .action-btn.liked { color: var(--red); }
+    .action-btn.echoed { color: var(--accent); }
+    
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surface3); color: var(--white); padding: 12px 24px; border-radius: var(--radius); font-size: 14px; z-index: 1000; transition: transform 0.3s ease; border: 1px solid var(--border); }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast-success { border-left: 3px solid var(--green); }
     .toast-error { border-left: 3px solid var(--red); }
     .loading { text-align: center; padding: 40px; color: var(--gray); }
-    .follow-btn { background: var(--accent); color: var(--bg); border: none; padding: 8px 20px; border-radius: var(--radius); font-weight: 600; cursor: pointer; margin-top: 16px; }
-    .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 48px 24px 24px; margin-top: 48px; }
-    .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; }
-    .footer-col h4 { font-family: 'Cormorant Garamond', serif; margin-bottom: 16px; }
-    .footer-col a { display: block; color: var(--gray); text-decoration: none; margin-bottom: 8px; font-size: 14px; }
-    .footer-col a:hover { color: var(--accent); }
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: var(--transition); }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--gray); }
+    
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: var(--transition); }
     .modal-overlay.active { visibility: visible; opacity: 1; }
     .modal { background: var(--surface2); border-radius: var(--radius-lg); max-width: 500px; width: 90%; border: 1px solid var(--border); }
     .modal-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
     .modal-body { padding: 20px; }
     .modal-footer { padding: 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; }
-    .btn-primary { background: var(--accent); color: var(--bg); border: none; padding: 10px 20px; border-radius: var(--radius); font-weight: 600; cursor: pointer; }
+    .btn-primary { background: var(--accent); color: var(--bg); border: none; padding: 10px 24px; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
     .btn-secondary { background: var(--surface3); border: 1px solid var(--border); color: var(--white); padding: 10px 20px; border-radius: var(--radius); cursor: pointer; }
     input, textarea { width: 100%; background: var(--surface3); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; color: var(--white); font-family: 'Cabinet Grotesk', sans-serif; }
+    input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+    label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: var(--gray2); }
+    
+    .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 48px 24px 24px; margin-top: 48px; }
+    .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; }
+    .footer-col h4 { font-family: 'Cormorant Garamond', serif; margin-bottom: 16px; }
+    .footer-col a { display: block; color: var(--gray); text-decoration: none; margin-bottom: 8px; font-size: 14px; }
+    .footer-col a:hover { color: var(--accent); }
+    
+    .dropdown-menu { position: absolute; top: 100%; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); min-width: 180px; z-index: 200; }
+    .dropdown-item { display: block; width: 100%; text-align: left; padding: 12px; background: none; border: none; color: var(--white); cursor: pointer; font-size: 14px; transition: var(--transition); }
+    .dropdown-item:hover { background: var(--surface3); }
+    .image-preview { margin-top: 12px; text-align: center; }
+    .preview-img { max-width: 200px; max-height: 200px; border-radius: var(--radius); margin-top: 8px; }
   </style>
 </head>
 <body>
   <div id="toast" class="toast"></div>
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
-      <div class="modal-header"><h3 id="modalTitle"></h3><button class="icon-btn" onclick="closeModal()">✕</button></div>
+      <div class="modal-header"><h3 id="modalTitle"></h3><button class="icon-btn" onclick="closeModal()" style="font-size:20px">✕</button></div>
       <div class="modal-body" id="modalBody"></div>
       <div class="modal-footer" id="modalFooter"></div>
     </div>
   </div>
 
   <header class="header">
-    <div class="logo"><img src="/images/reverb.png" alt="Reverb" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%2300d4aa\'/%3E%3Ctext x=\'50\' y=\'68\' font-size=\'48\' text-anchor=\'middle\' fill=\'%2305080f\' font-family=\'monospace\'%3ER%3C/text%3E%3C/svg%3E'"> <span>Reverb</span></div>
+    <div class="logo">
+      <img src="/images/reverb.png" alt="Reverb" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%2300d4aa\'/%3E%3Ctext x=\'50\' y=\'68\' font-size=\'48\' text-anchor=\'middle\' fill=\'%2305080f\' font-family=\'monospace\'%3ER%3C/text%3E%3C/svg%3E'">
+      <span>Reverb</span>
+    </div>
     <div class="header-actions">
-      <button class="icon-btn" id="searchBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg></button>
-      <button class="icon-btn" id="notifBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
-      <div class="profile-dropdown" style="position:relative"><button class="icon-btn" id="profileBtn"><img id="headerAvatar" class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23111827'/%3E%3Ccircle cx='16' cy='12' r='4' fill='%237a8899'/%3E%3Cpath d='M8 26c0-4 8-6 8-6s8 2 8 6' fill='%237a8899'/%3E%3C/svg%3E"></button><div id="profileDropdown" class="dropdown-menu" style="display:none;position:absolute;top:100%;right:0;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);min-width:180px;z-index:200"><a href="/profile.html" class="dropdown-item" style="display:block;padding:12px;color:var(--white);text-decoration:none">Profile</a><button id="logoutBtn" class="dropdown-item" style="display:block;width:100%;text-align:left;padding:12px;background:none;border:none;color:var(--white);cursor:pointer">Sign Out</button></div></div>
+      <button class="icon-btn" id="searchBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      </button>
+      <button class="icon-btn" id="notifBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <div style="position:relative">
+        <button class="icon-btn" id="profileBtn">
+          <img id="headerAvatar" class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23111827'/%3E%3Ccircle cx='16' cy='12' r='4' fill='%237a8899'/%3E%3Cpath d='M8 26c0-4 8-6 8-6s8 2 8 6' fill='%237a8899'/%3E%3C/svg%3E">
+        </button>
+        <div id="profileDropdown" class="dropdown-menu" style="display:none">
+          <button id="logoutBtn" class="dropdown-item">Sign Out</button>
+        </div>
+      </div>
       <button class="icon-btn hamburger" id="hamburger">☰</button>
     </div>
   </header>
@@ -137,127 +181,201 @@
     let token = localStorage.getItem('reverb_token');
     let currentUser = null;
     let profileUserId = null;
+    let currentMood = 0;
 
     function esc(s) { const d = document.createElement('div'); d.textContent = String(s || ''); return d.innerHTML; }
-    function showToast(msg, type='success') { const t = document.getElementById('toast'); t.textContent = msg; t.className = `toast toast-${type} show`; setTimeout(() => t.classList.remove('show'), 3500); }
+    
+    function showToast(msg, type = 'success') { 
+      const t = document.getElementById('toast'); 
+      t.textContent = msg; 
+      t.className = `toast toast-${type} show`; 
+      setTimeout(() => t.classList.remove('show'), 3500); 
+    }
+    
     async function api(method, path, body) {
       try {
-        const opts = { method, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token } };
+        const opts = { 
+          method, 
+          headers: { 
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token 
+          } 
+        };
         if (body && method !== 'GET') opts.body = JSON.stringify(body);
         const res = await fetch('/api' + path, opts);
         const data = await res.json();
         return { ok: res.ok, data, status: res.status };
-      } catch(e) { return { ok: false, data: { error: 'Network error' }, status: 0 }; }
+      } catch(e) { 
+        return { ok: false, data: { error: 'Network error. Please try again.' }, status: 0 }; 
+      }
     }
+    
+    async function uploadImageToImgBB(base64Image) {
+      const res = await api('POST', '/upload/image', { image: base64Image });
+      if (res.ok) return res.data.url;
+      throw new Error(res.data.error || 'Upload failed');
+    }
+    
     function openModal(title, bodyHtml, footerHtml) {
       document.getElementById('modalTitle').innerHTML = title;
       document.getElementById('modalBody').innerHTML = bodyHtml;
       document.getElementById('modalFooter').innerHTML = footerHtml || '<button class="btn-secondary" onclick="closeModal()">Close</button>';
       document.getElementById('modalOverlay').classList.add('active');
     }
-    function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+    
+    function closeModal() { 
+      document.getElementById('modalOverlay').classList.remove('active'); 
+    }
 
     async function checkAuth() {
       token = localStorage.getItem('reverb_token');
       const userStr = localStorage.getItem('reverb_user');
-      if (!token || !userStr) { window.location.href = '/login.html'; return false; }
+      if (!token || !userStr) { 
+        window.location.href = '/login.html'; 
+        return false; 
+      }
       currentUser = JSON.parse(userStr);
       if (currentUser.avatar_url) document.getElementById('headerAvatar').src = currentUser.avatar_url;
       if (currentUser.role === 'admin') document.getElementById('adminNav').style.display = 'block';
       return true;
     }
 
+    // Get user ID from URL or use current user
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('id');
     profileUserId = userId ? parseInt(userId) : (currentUser ? currentUser.id : null);
 
     async function loadProfile() {
-      if (!profileUserId) { document.getElementById('profileContainer').innerHTML = '<div class="loading">No user specified</div>'; return; }
-      const res = await api('GET', `/user/profile/${profileUserId}`);
-      if (!res.ok) { document.getElementById('profileContainer').innerHTML = '<div class="loading">User not found</div>'; return; }
-      const profile = res.data;
-      const postsRes = await api('GET', `/feed?limit=50&offset=0`);
-      const userPosts = postsRes.ok ? postsRes.data.posts.filter(p => p.user_id === profileUserId) : [];
-      let followStatus = false;
-      if (currentUser.id !== profileUserId) {
-        const followRes = await api('GET', `/user/follow/status/${profileUserId}`);
-        if (followRes.ok) followStatus = followRes.data.following;
+      if (!profileUserId) { 
+        document.getElementById('profileContainer').innerHTML = '<div class="empty-state">No user specified</div>'; 
+        return; 
       }
-      renderProfile(profile, userPosts, followStatus);
+      
+      // Load profile data
+      const profileRes = await api('GET', `/user/profile/${profileUserId}`);
+      if (!profileRes.ok) { 
+        document.getElementById('profileContainer').innerHTML = '<div class="empty-state">User not found</div>'; 
+        return; 
+      }
+      const profile = profileRes.data;
+      currentMood = profile.mood || 0;
+      
+      // Load user's posts
+      const feedRes = await api('GET', `/feed?limit=50&offset=0`);
+      const userPosts = feedRes.ok ? (feedRes.data.posts || []).filter(p => p.user_id === profileUserId) : [];
+      
+      // Check follow status (if viewing other user)
+      let isFollowing = false;
+      if (currentUser.id !== profileUserId) {
+        // You can add a follow status endpoint or derive from feed
+        const followsRes = await api('GET', `/user/following/${profileUserId}`);
+        isFollowing = followsRes.ok ? followsRes.data.following : false;
+      }
+      
+      renderProfile(profile, userPosts, isFollowing);
     }
 
     function renderProfile(profile, posts, isFollowing) {
-      const moods = ['None', '😊 Happy', '😢 Sad', '😡 Angry', '🤔 Curious', '🎉 Celebrate', '💪 Strong'];
-      const moodSvgs = [
-        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
-        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
-        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
-        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M8 9h8M8 15h8"/></svg>',
-        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
-        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>',
-        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>'
+      const moods = [
+        { value: 0, emoji: '😐', label: 'Neutral' },
+        { value: 1, emoji: '😊', label: 'Happy' },
+        { value: 2, emoji: '😢', label: 'Sad' },
+        { value: 3, emoji: '😡', label: 'Angry' },
+        { value: 4, emoji: '🤔', label: 'Curious' },
+        { value: 5, emoji: '🎉', label: 'Celebrate' },
+        { value: 6, emoji: '💪', label: 'Strong' }
       ];
+      
       let html = `
         <div class="profile-header">
-          <img class="profile-avatar" src="${profile.avatar_url || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'%3E%3Ccircle cx=\'60\' cy=\'60\' r=\'60\' fill=\'%23111827\'/%3E%3C/svg%3E'}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'%3E%3Ccircle cx=\'60\' cy=\'60\' r=\'60\' fill=\'%23111827\'/%3E%3C/svg%3E'">
-          <div class="profile-name">${esc(profile.name)} ${profile.is_verified ? '<span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span>' : ''}</div>
+          <div class="camera-overlay">
+            <img class="profile-avatar" id="profileAvatar" src="${profile.avatar_url || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'%3E%3Ccircle cx=\'60\' cy=\'60\' r=\'60\' fill=\'%23111827\'/%3E%3Ctext x=\'60\' y=\'75\' font-size=\'40\' text-anchor=\'middle\' fill=\'%237a8899\'%3E?%3C/text%3E%3C/svg%3E'}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'%3E%3Ccircle cx=\'60\' cy=\'60\' r=\'60\' fill=\'%23111827\'/%3E%3Ctext x=\'60\' y=\'75\' font-size=\'40\' text-anchor=\'middle\' fill=\'%237a8899\'%3E?%3C/text%3E%3C/svg%3E'">
+            ${currentUser.id === profileUserId ? `<div class="camera-icon" onclick="openAvatarUpload()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>` : ''}
+          </div>
+          <div class="profile-name">
+            ${esc(profile.name)} 
+            ${profile.is_verified ? '<span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span>' : ''}
+          </div>
           <div class="profile-bio">${esc(profile.bio || 'No bio yet')}</div>
+          <div class="profile-meta">
+            <div class="meta-item"><div class="meta-number">${posts.length}</div><div class="meta-label">Posts</div></div>
+            <div class="meta-item"><div class="meta-number">—</div><div class="meta-label">Followers</div></div>
+            <div class="meta-item"><div class="meta-number">—</div><div class="meta-label">Following</div></div>
+          </div>
       `;
+      
+      // Mood selector (only for own profile)
       if (currentUser.id === profileUserId) {
-        html += `<div class="mood-section"><div class="mood-selector" id="moodSelector">`;
-        for (let i = 0; i <= 6; i++) {
-          html += `<button class="mood-btn ${profile.mood === i ? 'active' : ''}" data-mood="${i}" title="${moods[i]}">${moodSvgs[i]}</button>`;
+        html += `<div class="mood-section">
+          <div class="mood-selector" id="moodSelector">`;
+        for (const mood of moods) {
+          html += `<button class="mood-btn ${currentMood === mood.value ? 'active' : ''}" data-mood="${mood.value}" title="${mood.label}">${mood.emoji}</button>`;
         }
-        html += `</div></div><button class="edit-btn" id="editProfileBtn">Edit Profile</button>`;
+        html += `</div></div>
+          <button class="edit-btn" onclick="openEditProfileModal('${esc(profile.name)}', '${esc(profile.bio || '')}')">Edit Profile</button>`;
       } else {
         html += `<button class="follow-btn" id="followBtn">${isFollowing ? 'Unfollow' : 'Follow'}</button>`;
       }
-      html += `</div><h3 style="margin-bottom:16px">Posts (${posts.length})</h3><div id="userPosts"></div>`;
+      
+      html += `</div>`;
+      html += `<h3 style="margin-bottom: 20px;">Posts</h3><div id="userPosts"></div>`;
+      
       document.getElementById('profileContainer').innerHTML = html;
+      
+      // Attach mood listeners
       if (currentUser.id === profileUserId) {
         document.querySelectorAll('.mood-btn').forEach(btn => {
           btn.onclick = async () => {
             const mood = parseInt(btn.dataset.mood);
             const res = await api('PUT', '/user/mood', { mood });
-            if (res.ok) { showToast('Mood updated'); loadProfile(); }
-            else showToast(res.data.error, 'error');
+            if (res.ok) {
+              showToast('Mood updated');
+              currentMood = mood;
+              loadProfile();
+            } else {
+              showToast(res.data.error, 'error');
+            }
           };
         });
-        document.getElementById('editProfileBtn').onclick = () => {
-          openModal('Edit Profile', `
-            <label>Avatar URL</label><input type="text" id="editAvatar" value="${profile.avatar_url || ''}" placeholder="Image URL"><br><br>
-            <label>Bio</label><textarea id="editBio" rows="3">${esc(profile.bio || '')}</textarea>
-          `, '<button class="btn-primary" onclick="saveProfile()">Save</button><button class="btn-secondary" onclick="closeModal()">Cancel</button>');
-        };
       } else if (profileUserId !== currentUser.id) {
-        document.getElementById('followBtn').onclick = async () => {
-          const res = await api('POST', '/user/follow', { followeeId: profileUserId });
-          if (res.ok) loadProfile();
-          else showToast(res.data.error, 'error');
-        };
+        const followBtn = document.getElementById('followBtn');
+        if (followBtn) {
+          followBtn.onclick = async () => {
+            const res = await api('POST', '/user/follow', { followeeId: profileUserId });
+            if (res.ok) loadProfile();
+            else showToast(res.data.error, 'error');
+          };
+        }
       }
+      
       renderUserPosts(posts);
     }
 
     function renderUserPosts(posts) {
-      if (!posts || posts.length === 0) { document.getElementById('userPosts').innerHTML = '<div class="loading">No posts yet</div>'; return; }
+      if (!posts || posts.length === 0) {
+        document.getElementById('userPosts').innerHTML = '<div class="empty-state">No posts yet</div>';
+        return;
+      }
+      
       let html = '';
       for (const p of posts) {
         html += `
           <div class="post-card">
             <div class="post-header">
-              <img class="post-avatar" src="${p.avatar_url || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'44\' height=\'44\'%3E%3Ccircle cx=\'22\' cy=\'22\' r=\'22\' fill=\'%23111827\'/%3E%3C/svg%3E'}">
+              <img class="post-avatar" src="${p.avatar_url || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'44\' height=\'44\'%3E%3Ccircle cx=\'22\' cy=\'22\' r=\'22\' fill=\'%23111827\'/%3E%3C/svg%3E'}" onclick="window.location.href='/profile.html?id=${p.user_id}'">
               <div class="post-info">
-                <div class="post-name">${esc(p.name)}</div>
+                <div class="post-name" onclick="window.location.href='/profile.html?id=${p.user_id}'">${esc(p.name)} ${p.is_verified ? '<span class="verified-badge"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span>' : ''}</div>
                 <div class="post-time">${new Date(p.created_at * 1000).toLocaleString()}</div>
               </div>
             </div>
             <div class="post-content">${esc(p.content)}</div>
-            ${p.image_url ? `<img class="post-image" src="${p.image_url}" onerror="this.style.display='none'">` : ''}
+            ${p.image_url ? `<img class="post-image" src="${p.image_url}" onclick="window.open(this.src)">` : ''}
             <div class="post-actions">
-              <button class="action-btn">❤️ ${p.like_count || 0}</button>
-              <button class="action-btn">📢 ${p.echo_count || 0}</button>
-              <button class="action-btn">💬 ${p.comment_count || 0}</button>
+              <button class="action-btn" onclick="likePost(${p.id}, this)">❤️ ${p.like_count || 0}</button>
+              <button class="action-btn" onclick="echoPost(${p.id}, this)">📢 ${p.echo_count || 0}</button>
+              <button class="action-btn" onclick="showComments(${p.id})">💬 ${p.comment_count || 0}</button>
             </div>
           </div>
         `;
@@ -265,32 +383,147 @@
       document.getElementById('userPosts').innerHTML = html;
     }
 
-    window.saveProfile = async () => {
-      const avatar_url = document.getElementById('editAvatar').value;
-      const bio = document.getElementById('editBio').value;
-      const res = await api('PUT', '/user/profile', { avatar_url, bio });
-      if (res.ok) { showToast('Profile updated'); closeModal(); loadProfile(); }
+    // Actions
+    window.likePost = async (postId, btn) => {
+      const res = await api('POST', `/posts/${postId}/like`);
+      if (res.ok) loadProfile();
       else showToast(res.data.error, 'error');
     };
-
-    document.getElementById('hamburger').onclick = () => document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('profileBtn').onclick = () => { const d = document.getElementById('profileDropdown'); d.style.display = d.style.display === 'none' ? 'block' : 'none'; };
-    document.getElementById('logoutBtn').onclick = () => { localStorage.clear(); window.location.href = '/login.html'; };
-    document.getElementById('searchBtn').onclick = () => { openModal('Search', '<input type="text" id="searchQuery" placeholder="Search..." style="width:100%"><div id="searchResults"></div>', '<button class="btn-primary" onclick="performSearch()">Search</button><button class="btn-secondary" onclick="closeModal()">Cancel</button>'); };
-    window.performSearch = async () => {
-      const q = document.getElementById('searchQuery').value;
-      if (!q) return;
-      const res = await api('GET', `/search?q=${encodeURIComponent(q)}`);
-      if (res.ok) {
-        let html = '<h4>Posts</h4>';
-        for (const p of res.data.posts) html += `<div style="padding:8px;border-bottom:1px solid var(--border)">${esc(p.content)}</div>`;
-        html += '<h4>Users</h4>';
-        for (const u of res.data.users) html += `<div style="padding:8px">${esc(u.name)}</div>`;
-        document.getElementById('searchResults').innerHTML = html;
+    
+    window.echoPost = async (postId, btn) => {
+      const res = await api('POST', `/posts/${postId}/echo`);
+      if (res.ok) loadProfile();
+      else showToast(res.data.error, 'error');
+    };
+    
+    window.showComments = (postId) => {
+      openModal('Comments', '<div id="commentsList" class="loading">Loading comments...</div>', '<button class="btn-secondary" onclick="closeModal()">Close</button>');
+      loadComments(postId);
+    };
+    
+    async function loadComments(postId) {
+      const res = await api('GET', `/posts/${postId}/comments`);
+      if (res.ok && res.data.comments) {
+        let html = '';
+        for (const c of res.data.comments) {
+          html += `<div style="padding:12px; border-bottom:1px solid var(--border)"><strong>${esc(c.user_name)}</strong>: ${esc(c.content)}<br><small style="color:var(--gray)">${new Date(c.created_at * 1000).toLocaleString()}</small></div>`;
+        }
+        if (html === '') html = '<div class="empty-state">No comments yet</div>';
+        html += `<div style="margin-top:16px"><textarea id="commentContent" placeholder="Write a comment..." style="width:100%; margin-bottom:8px"></textarea><button class="btn-primary" onclick="addComment(${postId})">Post Comment</button></div>`;
+        document.getElementById('commentsList').innerHTML = html;
+      }
+    }
+    
+    window.addComment = async (postId) => {
+      const content = document.getElementById('commentContent').value;
+      if (!content.trim()) { showToast('Write a comment first', 'error'); return; }
+      const res = await api('POST', '/comments', { post_id: postId, content });
+      if (res.ok) { showToast('Comment posted'); loadComments(postId); loadProfile(); }
+      else showToast(res.data.error, 'error');
+    };
+    
+    // Avatar upload
+    window.openAvatarUpload = () => {
+      openModal('Upload Avatar', `
+        <input type="file" id="avatarFile" accept="image/jpeg,image/png,image/gif,image/webp">
+        <div id="avatarPreview" class="image-preview"></div>
+        <p style="font-size:12px; color:var(--gray); margin-top:12px">Max 5MB. JPG, PNG, GIF, WebP</p>
+      `, '<button class="btn-primary" onclick="uploadAvatar()">Upload</button><button class="btn-secondary" onclick="closeModal()">Cancel</button>');
+      
+      document.getElementById('avatarFile').onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            document.getElementById('avatarPreview').innerHTML = `<img src="${ev.target.result}" class="preview-img">`;
+            window.selectedAvatar = ev.target.result.split(',')[1];
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+    };
+    
+    window.uploadAvatar = async () => {
+      if (!window.selectedAvatar) { showToast('Please select an image', 'error'); return; }
+      showToast('Uploading...', 'success');
+      try {
+        const imageUrl = await uploadImageToImgBB(window.selectedAvatar);
+        const res = await api('PUT', '/user/avatar', { avatar_url: imageUrl });
+        if (res.ok) {
+          showToast('Avatar updated!');
+          closeModal();
+          loadProfile();
+          // Update header avatar
+          if (currentUser) {
+            currentUser.avatar_url = imageUrl;
+            localStorage.setItem('reverb_user', JSON.stringify(currentUser));
+            document.getElementById('headerAvatar').src = imageUrl;
+          }
+        } else {
+          showToast(res.data.error, 'error');
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
       }
     };
-
-    checkAuth().then(() => { loadProfile(); });
+    
+    // Edit profile modal
+    window.openEditProfileModal = (name, bio) => {
+      openModal('Edit Profile', `
+        <label>Display Name</label>
+        <input type="text" id="editName" value="${esc(name)}">
+        <label style="margin-top:16px">Bio</label>
+        <textarea id="editBio" rows="4">${esc(bio)}</textarea>
+      `, '<button class="btn-primary" onclick="saveProfile()">Save Changes</button><button class="btn-secondary" onclick="closeModal()">Cancel</button>');
+    };
+    
+    window.saveProfile = async () => {
+      const name = document.getElementById('editName').value;
+      const bio = document.getElementById('editBio').value;
+      if (!name.trim()) { showToast('Name is required', 'error'); return; }
+      const res = await api('PUT', '/user/profile', { name, bio });
+      if (res.ok) {
+        showToast('Profile updated!');
+        closeModal();
+        if (currentUser) {
+          currentUser.name = name;
+          localStorage.setItem('reverb_user', JSON.stringify(currentUser));
+        }
+        loadProfile();
+      } else {
+        showToast(res.data.error, 'error');
+      }
+    };
+    
+    // Navigation
+    document.getElementById('hamburger').onclick = () => document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('profileBtn').onclick = () => { 
+      const d = document.getElementById('profileDropdown'); 
+      d.style.display = d.style.display === 'none' ? 'block' : 'none'; 
+    };
+    document.getElementById('logoutBtn').onclick = () => { 
+      localStorage.clear(); 
+      window.location.href = '/login.html'; 
+    };
+    document.getElementById('searchBtn').onclick = () => { 
+      window.location.href = '/explore.html'; 
+    };
+    document.getElementById('notifBtn').onclick = () => { 
+      window.location.href = '/notifications.html'; 
+    };
+    
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#profileBtn') && !e.target.closest('#profileDropdown')) {
+        document.getElementById('profileDropdown').style.display = 'none';
+      }
+    });
+    
+    // Initialize
+    checkAuth().then(() => { 
+      profileUserId = userId ? parseInt(userId) : (currentUser ? currentUser.id : null);
+      loadProfile(); 
+    });
   </script>
 </body>
 </html>
