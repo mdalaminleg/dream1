@@ -35,13 +35,13 @@
     .logo { display: flex; align-items: center; gap: 12px; font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; }
     .logo img { height: 32px; width: auto; }
     .header-actions { display: flex; gap: 16px; align-items: center; }
-    .icon-btn { background: none; border: none; cursor: pointer; padding: 8px; border-radius: var(--radius); transition: var(--transition); display: flex; align-items: center; justify-content: center; }
-    .icon-btn:hover { background: var(--surface2); }
+    .icon-btn { background: none; border: none; cursor: pointer; padding: 8px; border-radius: var(--radius); transition: var(--transition); display: flex; align-items: center; justify-content: center; color: var(--gray); }
+    .icon-btn:hover { background: var(--surface2); color: var(--white); }
     .avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
     .sidebar { position: fixed; top: 64px; left: -260px; width: 260px; height: calc(100% - 64px); background: var(--surface); border-right: 1px solid var(--border); transition: left 0.3s ease; z-index: 99; overflow-y: auto; }
     .sidebar.open { left: 0; }
     .sidebar-nav { padding: 24px; display: flex; flex-direction: column; gap: 8px; }
-    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius); color: var(--gray); text-decoration: none; transition: var(--transition); background: none; width: 100%; text-align: left; font-size: 16px; cursor: pointer; border: none; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius); color: var(--gray); text-decoration: none; transition: var(--transition); background: none; width: 100%; text-align: left; font-size: 16px; cursor: pointer; border: none; font-family: 'Cabinet Grotesk', sans-serif; }
     .nav-item:hover, .nav-item.active { background: var(--surface2); color: var(--white); }
     .nav-item svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
     .main { margin-left: 0; padding: 24px; transition: margin-left 0.3s ease; max-width: 1200px; margin: 0 auto; width: 100%; }
@@ -49,108 +49,174 @@
     .view { display: none; }
     .view.active { display: block; }
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px; }
-    .stat-card { background: var(--surface2); border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border); text-align: center; }
-    .stat-number { font-size: 36px; font-weight: 700; color: var(--accent); }
-    .stat-label { color: var(--gray); margin-top: 8px; }
-    .data-table { width: 100%; background: var(--surface2); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow-x: auto; }
+    .stat-card { background: var(--surface2); border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border); text-align: center; transition: var(--transition); }
+    .stat-card:hover { transform: translateY(-2px); border-color: var(--accent-dim); }
+    .stat-number { font-size: 42px; font-weight: 700; color: var(--accent); }
+    .stat-label { color: var(--gray); margin-top: 8px; font-size: 14px; }
+    .data-table { background: var(--surface2); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow-x: auto; margin-top: 20px; }
     .data-table table { width: 100%; border-collapse: collapse; }
-    .data-table th, .data-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
-    .data-table th { background: var(--surface3); font-weight: 600; }
-    .btn-small { background: var(--surface3); border: 1px solid var(--border); color: var(--white); padding: 6px 12px; border-radius: var(--radius); cursor: pointer; font-size: 12px; margin: 2px; }
-    .btn-small:hover { background: var(--accent); color: var(--bg); }
+    .data-table th, .data-table td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    .data-table th { background: var(--surface3); font-weight: 600; font-size: 14px; color: var(--gray2); }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--accent-dim); }
+    .btn-small { background: var(--surface3); border: 1px solid var(--border); color: var(--white); padding: 6px 12px; border-radius: var(--radius); cursor: pointer; font-size: 12px; margin: 2px; transition: var(--transition); }
+    .btn-small:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
     .btn-danger { background: var(--red-dim); border-color: var(--red); color: var(--red); }
     .btn-danger:hover { background: var(--red); color: var(--white); }
     .btn-success { background: var(--green-dim); border-color: var(--green); color: var(--green); }
     .btn-success:hover { background: var(--green); color: var(--bg); }
+    .btn-warning { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
+    .btn-warning:hover { background: var(--orange); color: var(--bg); }
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surface3); color: var(--white); padding: 12px 24px; border-radius: var(--radius); font-size: 14px; z-index: 1000; transition: transform 0.3s ease; border: 1px solid var(--border); }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast-success { border-left: 3px solid var(--green); }
     .toast-error { border-left: 3px solid var(--red); }
     .loading { text-align: center; padding: 40px; color: var(--gray); }
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: var(--transition); }
+    .empty-state { text-align: center; padding: 40px; color: var(--gray); }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: var(--transition); }
     .modal-overlay.active { visibility: visible; opacity: 1; }
     .modal { background: var(--surface2); border-radius: var(--radius-lg); max-width: 500px; width: 90%; border: 1px solid var(--border); }
     .modal-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .modal-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; }
     .modal-body { padding: 20px; }
     .modal-footer { padding: 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; }
-    .btn-primary { background: var(--accent); color: var(--bg); border: none; padding: 10px 20px; border-radius: var(--radius); font-weight: 600; cursor: pointer; }
-    .btn-secondary { background: var(--surface3); border: 1px solid var(--border); color: var(--white); padding: 10px 20px; border-radius: var(--radius); cursor: pointer; }
+    .btn-primary { background: var(--accent); color: var(--bg); border: none; padding: 10px 24px; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-secondary { background: var(--surface3); border: 1px solid var(--border); color: var(--white); padding: 10px 20px; border-radius: var(--radius); cursor: pointer; transition: var(--transition); }
+    .btn-secondary:hover { background: var(--surface); }
     input, textarea { width: 100%; background: var(--surface3); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; color: var(--white); font-family: 'Cabinet Grotesk', sans-serif; }
+    input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+    label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: var(--gray2); }
+    hr { border-color: var(--border); margin: 20px 0; }
+    .section-title { font-size: 20px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
     .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 48px 24px 24px; margin-top: 48px; }
     .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; }
-    .footer-col h4 { font-family: 'Cormorant Garamond', serif; margin-bottom: 16px; }
-    .footer-col a { display: block; color: var(--gray); text-decoration: none; margin-bottom: 8px; font-size: 14px; }
+    .footer-col h4 { font-family: 'Cormorant Garamond', serif; margin-bottom: 16px; font-size: 18px; }
+    .footer-col a { display: block; color: var(--gray); text-decoration: none; margin-bottom: 8px; font-size: 14px; transition: var(--transition); }
     .footer-col a:hover { color: var(--accent); }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .badge-success { background: var(--green-dim); color: var(--green); }
+    .badge-danger { background: var(--red-dim); color: var(--red); }
+    .badge-warning { background: var(--orange-dim); color: var(--orange); }
+    .badge-info { background: var(--accent-dim); color: var(--accent); }
+    .dropdown-menu { position: absolute; top: 100%; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); min-width: 180px; z-index: 200; }
+    .dropdown-item { display: block; width: 100%; text-align: left; padding: 12px; background: none; border: none; color: var(--white); cursor: pointer; font-size: 14px; transition: var(--transition); }
+    .dropdown-item:hover { background: var(--surface3); }
   </style>
 </head>
 <body>
   <div id="toast" class="toast"></div>
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
-      <div class="modal-header"><h3 id="modalTitle"></h3><button class="icon-btn" onclick="closeModal()">✕</button></div>
+      <div class="modal-header"><h3 id="modalTitle"></h3><button class="icon-btn" onclick="closeModal()" style="font-size:20px">✕</button></div>
       <div class="modal-body" id="modalBody"></div>
       <div class="modal-footer" id="modalFooter"></div>
     </div>
   </div>
 
   <header class="header">
-    <div class="logo"><img src="/images/reverb.png" alt="Reverb" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%2300d4aa\'/%3E%3Ctext x=\'50\' y=\'68\' font-size=\'48\' text-anchor=\'middle\' fill=\'%2305080f\' font-family=\'monospace\'%3ER%3C/text%3E%3C/svg%3E'"> <span>Reverb Admin</span></div>
+    <div class="logo">
+      <img src="/images/reverb.png" alt="Reverb" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%2300d4aa\'/%3E%3Ctext x=\'50\' y=\'68\' font-size=\'48\' text-anchor=\'middle\' fill=\'%2305080f\' font-family=\'monospace\'%3ER%3C/text%3E%3C/svg%3E'">
+      <span>Reverb Admin</span>
+    </div>
     <div class="header-actions">
-      <button class="icon-btn" id="searchBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg></button>
-      <div class="profile-dropdown" style="position:relative"><button class="icon-btn" id="profileBtn"><img id="headerAvatar" class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23111827'/%3E%3Ccircle cx='16' cy='12' r='4' fill='%237a8899'/%3E%3Cpath d='M8 26c0-4 8-6 8-6s8 2 8 6' fill='%237a8899'/%3E%3C/svg%3E"></button><div id="profileDropdown" class="dropdown-menu" style="display:none;position:absolute;top:100%;right:0;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);min-width:180px;z-index:200"><button id="logoutBtn" class="dropdown-item" style="display:block;width:100%;text-align:left;padding:12px;background:none;border:none;color:var(--white);cursor:pointer">Sign Out</button></div></div>
+      <button class="icon-btn" id="searchBtn" title="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      </button>
+      <div style="position:relative">
+        <button class="icon-btn" id="profileBtn">
+          <img id="headerAvatar" class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23111827'/%3E%3Ccircle cx='16' cy='12' r='4' fill='%237a8899'/%3E%3Cpath d='M8 26c0-4 8-6 8-6s8 2 8 6' fill='%237a8899'/%3E%3C/svg%3E">
+        </button>
+        <div id="profileDropdown" class="dropdown-menu" style="display:none">
+          <button id="logoutBtn" class="dropdown-item">Sign Out</button>
+        </div>
+      </div>
       <button class="icon-btn hamburger" id="hamburger">☰</button>
     </div>
   </header>
 
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-nav">
-      <button class="nav-item" data-view="dashboard"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg> Dashboard</button>
-      <button class="nav-item" data-view="users"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Users</button>
-      <button class="nav-item" data-view="posts"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg> Posts</button>
-      <button class="nav-item" data-view="banned-words"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Banned Words</button>
-      <button class="nav-item" data-view="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.03.03A10 10 0 0 0 12 17.66a10 10 0 0 0 6.37-2.63z"/><path d="M12 2v4M12 22v-4"/></svg> Settings</button>
+      <button class="nav-item" data-view="dashboard">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-7H9v7H5a2 2 0 0 1-2-2z"/></svg> Dashboard
+      </button>
+      <button class="nav-item" data-view="users">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Users
+      </button>
+      <button class="nav-item" data-view="posts">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg> Posts
+      </button>
+      <button class="nav-item" data-view="banned-words">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Banned Words
+      </button>
+      <button class="nav-item" data-view="settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.03.03A10 10 0 0 0 12 17.66a10 10 0 0 0 6.37-2.63z"/><path d="M12 2v4M12 22v-4"/></svg> Settings
+      </button>
     </div>
   </nav>
 
   <main class="main">
+    <!-- Dashboard View -->
     <div id="view-dashboard" class="view active">
-      <h1>Admin Dashboard</h1>
-      <div class="stats-grid" id="statsGrid"><div class="loading">Loading stats...</div></div>
-      <div class="data-table"><table id="recentTable"><thead><tr><th>Recent Activity</th></tr></thead><tbody><tr><td class="loading">Loading...</td></tr></tbody></table></div>
+      <h1 style="margin-bottom:24px">Admin Dashboard</h1>
+      <div class="stats-grid" id="statsGrid"><div class="loading">Loading statistics...</div></div>
+      
+      <div class="section-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"><path d="M12 8v4l3 3M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/></svg>
+        Recent Activities
+      </div>
+      <div class="data-table" id="recentActivitiesTable">
+        <div class="loading">Loading recent activities...</div>
+      </div>
     </div>
 
+    <!-- Users View -->
     <div id="view-users" class="view">
-      <h1>User Management</h1>
+      <h1 style="margin-bottom:24px">User Management</h1>
       <div class="data-table" id="usersTable"><div class="loading">Loading users...</div></div>
     </div>
 
+    <!-- Posts View -->
     <div id="view-posts" class="view">
-      <h1>Post Management</h1>
+      <h1 style="margin-bottom:24px">Post Management</h1>
       <div class="data-table" id="postsTable"><div class="loading">Loading posts...</div></div>
     </div>
 
+    <!-- Banned Words View -->
     <div id="view-banned-words" class="view">
-      <h1>Banned Words</h1>
-      <div style="margin-bottom:20px"><button class="btn-primary" onclick="openAddWordModal()">+ Add Word</button></div>
+      <h1 style="margin-bottom:24px">Banned Words</h1>
+      <button class="btn-primary" onclick="openAddWordModal()" style="margin-bottom:20px">+ Add Banned Word</button>
       <div class="data-table" id="bannedWordsTable"><div class="loading">Loading banned words...</div></div>
     </div>
 
+    <!-- Settings View -->
     <div id="view-settings" class="view">
-      <h1>Settings</h1>
-      <div class="data-table" style="padding:24px">
+      <h1 style="margin-bottom:24px">Settings</h1>
+      <div style="background: var(--surface2); border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border);">
         <label>ImgBB API Key</label>
-        <input type="text" id="imgbbApiKey" placeholder="Enter your ImgBB API key" style="margin:12px 0">
+        <input type="text" id="imgbbApiKey" placeholder="Enter your ImgBB API key" style="margin: 8px 0 16px 0">
         <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
-        <hr style="margin:24px 0;border-color:var(--border)">
-        <button class="btn-primary" onclick="runCleanup()">Run Database Cleanup (Prune old data)</button>
+        
+        <hr>
+        
+        <label>Database Maintenance</label>
+        <p style="color: var(--gray); font-size: 14px; margin: 8px 0 16px 0">Clean up old notifications, expired posts, and stale data to keep D1 storage minimal.</p>
+        <button class="btn-primary" onclick="runCleanup()">Run Cleanup Now</button>
+        
+        <hr>
+        
+        <label>System Status</label>
+        <div id="systemStatus" style="margin-top: 12px;">
+          <div class="loading">Checking status...</div>
+        </div>
       </div>
     </div>
   </main>
 
   <footer class="footer">
     <div class="footer-grid">
-      <div class="footer-col"><h4>Reverb</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a></div>
-      <div class="footer-col"><h4>Platform</h4><a href="#">Features</a><a href="#">Echo</a><a href="#">Time Capsule</a></div>
+      <div class="footer-col"><h4>Reverb</h4><a href="/">Home</a><a href="#">About</a><a href="#">Blog</a></div>
+      <div class="footer-col"><h4>Platform</h4><a href="/explore.html">Explore</a><a href="#">Echo</a><a href="#">Time Capsule</a></div>
       <div class="footer-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Safety</a><a href="#">Privacy</a></div>
       <div class="footer-col"><h4>Legal</h4><a href="#">Terms</a><a href="#">Cookies</a><a href="#">Licenses</a></div>
     </div>
@@ -160,31 +226,61 @@
     let token = localStorage.getItem('reverb_token');
     let currentUser = null;
 
-    function esc(s) { const d = document.createElement('div'); d.textContent = String(s || ''); return d.innerHTML; }
-    function showToast(msg, type='success') { const t = document.getElementById('toast'); t.textContent = msg; t.className = `toast toast-${type} show`; setTimeout(() => t.classList.remove('show'), 3500); }
+    function esc(s) { 
+      const d = document.createElement('div'); 
+      d.textContent = String(s || ''); 
+      return d.innerHTML; 
+    }
+    
+    function showToast(msg, type = 'success') { 
+      const t = document.getElementById('toast'); 
+      t.textContent = msg; 
+      t.className = `toast toast-${type} show`; 
+      setTimeout(() => t.classList.remove('show'), 3500); 
+    }
+    
     async function api(method, path, body) {
       try {
-        const opts = { method, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token } };
+        const opts = { 
+          method, 
+          headers: { 
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token 
+          } 
+        };
         if (body && method !== 'GET') opts.body = JSON.stringify(body);
         const res = await fetch('/api' + path, opts);
         const data = await res.json();
         return { ok: res.ok, data, status: res.status };
-      } catch(e) { return { ok: false, data: { error: 'Network error' }, status: 0 }; }
+      } catch(e) { 
+        return { ok: false, data: { error: 'Network error. Please try again.' }, status: 0 }; 
+      }
     }
+    
     function openModal(title, bodyHtml, footerHtml) {
       document.getElementById('modalTitle').innerHTML = title;
       document.getElementById('modalBody').innerHTML = bodyHtml;
       document.getElementById('modalFooter').innerHTML = footerHtml || '<button class="btn-secondary" onclick="closeModal()">Close</button>';
       document.getElementById('modalOverlay').classList.add('active');
     }
-    function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+    
+    function closeModal() { 
+      document.getElementById('modalOverlay').classList.remove('active'); 
+    }
 
     async function checkAuth() {
       token = localStorage.getItem('reverb_token');
       const userStr = localStorage.getItem('reverb_user');
-      if (!token || !userStr) { window.location.href = '/login.html'; return false; }
+      if (!token || !userStr) { 
+        window.location.href = '/login.html'; 
+        return false; 
+      }
       currentUser = JSON.parse(userStr);
-      if (currentUser.role !== 'admin') { window.location.href = '/'; return false; }
+      if (currentUser.role !== 'admin') { 
+        showToast('Admin access required', 'error');
+        setTimeout(() => { window.location.href = '/'; }, 1500);
+        return false; 
+      }
       if (currentUser.avatar_url) document.getElementById('headerAvatar').src = currentUser.avatar_url;
       return true;
     }
@@ -197,89 +293,125 @@
         document.getElementById(`view-${view}`).classList.add('active');
         document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        
+        // Load data based on view
         if (view === 'users') loadUsers();
         if (view === 'posts') loadAllPosts();
         if (view === 'banned-words') loadBannedWords();
         if (view === 'dashboard') loadDashboard();
-        if (view === 'settings') loadSettings();
+        if (view === 'settings') { loadSettings(); loadSystemStatus(); }
       };
     });
 
     async function loadDashboard() {
+      // Load stats
       const statsRes = await api('GET', '/admin/stats');
       if (statsRes.ok) {
         document.getElementById('statsGrid').innerHTML = `
-          <div class="stat-card"><div class="stat-number">${statsRes.data.users}</div><div class="stat-label">Total Users</div></div>
-          <div class="stat-card"><div class="stat-number">${statsRes.data.posts}</div><div class="stat-label">Total Posts</div></div>
-          <div class="stat-card"><div class="stat-number">${statsRes.data.pendingApprovals}</div><div class="stat-label">Pending Approvals</div></div>
+          <div class="stat-card">
+            <div class="stat-number">${statsRes.data.users || 0}</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${statsRes.data.posts || 0}</div>
+            <div class="stat-label">Total Posts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${statsRes.data.pendingApprovals || 0}</div>
+            <div class="stat-label">Pending Approvals</div>
+          </div>
         `;
       }
-      const usersRes = await api('GET', '/admin/users');
-      if (usersRes.ok) {
-        const pending = usersRes.data.users.filter(u => u.is_approved === 0 && u.role === 'user').slice(0, 5);
-        let html = '<thead><tr><th>Pending Users</th><th>Action</th></tr></thead><tbody>';
-        for (const u of pending) {
-          html += `<tr><td>${esc(u.email)} (${esc(u.name)})</td><td><button class="btn-small btn-success" onclick="approveUser(${u.id})">Approve</button> <button class="btn-small btn-danger" onclick="banUser(${u.id})">Ban</button></td></tr>`;
+      
+      // Load recent activities
+      const activitiesRes = await api('GET', '/admin/recent-activities');
+      if (activitiesRes.ok && activitiesRes.data.activities) {
+        let html = '<table><thead><tr><th>Time</th><th>Activity</th><th>Type</th></tr></thead><tbody>';
+        for (const act of activitiesRes.data.activities) {
+          const date = new Date(act.created_at * 1000).toLocaleString();
+          let badgeClass = 'badge-info';
+          if (act.type === 'user_register') badgeClass = 'badge-success';
+          if (act.type === 'post_created') badgeClass = 'badge-warning';
+          html += `<tr>
+            <td style="white-space:nowrap">${date}</td>
+            <td>${esc(act.description)}</td>
+            <td><span class="badge ${badgeClass}">${act.type === 'user_register' ? 'User' : 'Post'}</span></td>
+          </tr>`;
         }
-        html += '</tbody>';
-        document.querySelector('#recentTable').innerHTML = html;
+        html += '</tbody></table>';
+        document.getElementById('recentActivitiesTable').innerHTML = html;
+      } else {
+        document.getElementById('recentActivitiesTable').innerHTML = '<div class="empty-state">No recent activities found</div>';
       }
     }
 
     async function loadUsers() {
       const res = await api('GET', '/admin/users');
-      if (res.ok) {
-        let html = '<table><thead><tr><th>ID</th><th>Email</th><th>Name</th><th>Role</th><th>Approved</th><th>Banned</th><th>Verified</th><th>Actions</th></tr></thead><tbody>';
+      if (res.ok && res.data.users) {
+        let html = '<table><thead><tr><th>ID</th><th>Email</th><th>Name</th><th>Role</th><th>Status</th><th>Verified</th><th>Actions</th></tr></thead><tbody>';
         for (const u of res.data.users) {
+          const statusBadge = u.is_banned ? '<span class="badge badge-danger">Banned</span>' : (u.is_approved ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-warning">Pending</span>');
+          const verifiedBadge = u.is_verified ? '✅ Verified' : '○ Not verified';
           html += `<tr>
             <td>${u.id}</td>
             <td>${esc(u.email)}</td>
             <td>${esc(u.name)}</td>
-            <td>${u.role}</td>
-            <td>${u.is_approved ? '✅' : '❌'}</td>
-            <td>${u.is_banned ? '🚫' : '✅'}</td>
-            <td>${u.is_verified ? '⭐' : '○'}</td>
+            <td><span class="badge badge-info">${u.role}</span></td>
+            <td>${statusBadge}</td>
+            <td>${verifiedBadge}</td>
             <td>
               ${!u.is_approved && u.role === 'user' ? `<button class="btn-small btn-success" onclick="approveUser(${u.id})">Approve</button>` : ''}
               ${!u.is_banned ? `<button class="btn-small btn-danger" onclick="banUser(${u.id})">Ban</button>` : `<button class="btn-small btn-success" onclick="unbanUser(${u.id})">Unban</button>`}
-              ${!u.is_verified ? `<button class="btn-small" onclick="verifyUser(${u.id}, true)">Verify</button>` : `<button class="btn-small" onclick="verifyUser(${u.id}, false)">Unverify</button>`}
+              ${!u.is_verified ? `<button class="btn-small" onclick="verifyUser(${u.id}, true)">Verify</button>` : `<button class="btn-small btn-warning" onclick="verifyUser(${u.id}, false)">Unverify</button>`}
             </td>
           </tr>`;
         }
         html += '</tbody></table>';
         document.getElementById('usersTable').innerHTML = html;
+      } else {
+        document.getElementById('usersTable').innerHTML = '<div class="empty-state">Failed to load users</div>';
       }
     }
 
     async function loadAllPosts() {
       const res = await api('GET', '/explore?limit=100&offset=0');
-      if (res.ok) {
-        let html = '<table><thead><tr><th>ID</th><th>User</th><th>Content</th><th>Likes</th><th>Echoes</th><th>Created</th><th>Action</th></tr></thead><tbody>';
+      if (res.ok && res.data.posts) {
+        let html = '<table><thead><tr><th>ID</th><th>User</th><th>Content</th><th>❤️</th><th>📢</th><th>💬</th><th>Created</th><th>Action</th></tr></thead><tbody>';
         for (const p of res.data.posts) {
           html += `<tr>
             <td>${p.id}</td>
             <td>${esc(p.name)}</td>
-            <td>${esc(p.content.substring(0, 50))}${p.content.length > 50 ? '...' : ''}</td>
-            <td>${p.like_count}</td>
-            <td>${p.echo_count}</td>
-            <td>${new Date(p.created_at * 1000).toLocaleDateString()}</td>
+            <td style="max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">${esc(p.content?.substring(0, 60) || '')}${p.content?.length > 60 ? '...' : ''}</td>
+            <td>${p.like_count || 0}</td>
+            <td>${p.echo_count || 0}</td>
+            <td>${p.comment_count || 0}</td>
+            <td style="white-space:nowrap">${new Date(p.created_at * 1000).toLocaleDateString()}</td>
             <td><button class="btn-small btn-danger" onclick="deletePost(${p.id})">Delete</button></td>
           </tr>`;
         }
         html += '</tbody></table>';
         document.getElementById('postsTable').innerHTML = html;
+      } else {
+        document.getElementById('postsTable').innerHTML = '<div class="empty-state">No posts found</div>';
       }
     }
 
     async function loadBannedWords() {
       const res = await api('GET', '/admin/banned-words');
-      if (res.ok) {
-        let html = '<table><thead><tr><th>Word</th><th>Language</th><th>Action</th></tr></thead><tbody>';
+      if (res.ok && res.data.words) {
+        let html = '<table><thead><tr><th>Word</th><th>Language</th><th>Added By</th><th>Action</th></tr></thead><tbody>';
         for (const w of res.data.words) {
-          html += `<tr><td>${esc(w.word)}</td><td>${w.language}</td><td><button class="btn-small btn-danger" onclick="deleteWord('${w.word}')">Delete</button></td></tr>`;
+          html += `<tr>
+            <td><code style="background:var(--surface3); padding:4px 8px; border-radius:4px">${esc(w.word)}</code></td>
+            <td><span class="badge badge-info">${w.language || 'auto'}</span></td>
+            <td>System</td>
+            <td><button class="btn-small btn-danger" onclick="deleteWord('${w.word}')">Remove</button></td>
+          </tr>`;
         }
         html += '</tbody></table>';
         document.getElementById('bannedWordsTable').innerHTML = html;
+      } else {
+        document.getElementById('bannedWordsTable').innerHTML = '<div class="empty-state">No banned words found</div>';
       }
     }
 
@@ -290,64 +422,111 @@
       }
     }
 
+    async function loadSystemStatus() {
+      const res = await api('GET', '/admin/stats');
+      if (res.ok) {
+        document.getElementById('systemStatus').innerHTML = `
+          <div style="background:var(--surface3); padding:16px; border-radius:var(--radius);">
+            <p>✅ Database connected</p>
+            <p>📊 ${res.data.users} users, ${res.data.posts} posts</p>
+            <p>⏰ Last cleanup: ${new Date().toLocaleString()}</p>
+          </div>
+        `;
+      }
+    }
+
+    // Admin Actions
     window.approveUser = async (userId) => {
       const res = await api('POST', '/admin/user/approve', { userId });
-      if (res.ok) { showToast('User approved'); loadUsers(); loadDashboard(); }
+      if (res.ok) { showToast('User approved successfully'); loadUsers(); loadDashboard(); }
       else showToast(res.data.error, 'error');
     };
+    
     window.banUser = async (userId) => {
+      if (!confirm('Ban this user? Their posts will be deleted.')) return;
       const res = await api('POST', '/admin/user/ban', { userId });
       if (res.ok) { showToast('User banned'); loadUsers(); loadDashboard(); }
       else showToast(res.data.error, 'error');
     };
+    
     window.unbanUser = async (userId) => {
       const res = await api('POST', '/admin/user/unban', { userId });
       if (res.ok) { showToast('User unbanned'); loadUsers(); }
       else showToast(res.data.error, 'error');
     };
+    
     window.verifyUser = async (userId, verified) => {
       const res = await api('POST', '/admin/user/verify', { userId, verified });
-      if (res.ok) { showToast(verified ? 'User verified' : 'Verification removed'); loadUsers(); }
+      if (res.ok) { showToast(verified ? 'User verified badge added' : 'Verification removed'); loadUsers(); }
       else showToast(res.data.error, 'error');
     };
+    
     window.deletePost = async (postId) => {
-      if (!confirm('Delete this post?')) return;
+      if (!confirm('Delete this post permanently?')) return;
       const res = await api('DELETE', `/admin/post/${postId}`);
       if (res.ok) { showToast('Post deleted'); loadAllPosts(); loadDashboard(); }
       else showToast(res.data.error, 'error');
     };
+    
     window.deleteWord = async (word) => {
+      if (!confirm(`Remove "${word}" from banned words list?`)) return;
       const res = await api('DELETE', '/admin/banned-words', { word });
-      if (res.ok) { showToast('Word deleted'); loadBannedWords(); }
+      if (res.ok) { showToast('Word removed'); loadBannedWords(); }
       else showToast(res.data.error, 'error');
     };
+    
     window.openAddWordModal = () => {
-      openModal('Add Banned Word', '<input type="text" id="newWord" placeholder="Enter word to ban">', '<button class="btn-primary" onclick="addWord()">Add</button><button class="btn-secondary" onclick="closeModal()">Cancel</button>');
+      openModal('Add Banned Word', 
+        '<input type="text" id="newWord" placeholder="Enter word to ban" style="width:100%">',
+        '<button class="btn-primary" onclick="addWord()">Add</button><button class="btn-secondary" onclick="closeModal()">Cancel</button>'
+      );
     };
+    
     window.addWord = async () => {
       const word = document.getElementById('newWord').value.trim();
-      if (!word) return;
+      if (!word) { showToast('Please enter a word', 'error'); return; }
       const res = await api('POST', '/admin/banned-words', { word });
       if (res.ok) { showToast('Word added'); closeModal(); loadBannedWords(); }
       else showToast(res.data.error, 'error');
     };
+    
     window.saveSettings = async () => {
       const imgbb_api_key = document.getElementById('imgbbApiKey').value;
       const res = await api('POST', '/admin/settings', { imgbb_api_key });
-      if (res.ok) showToast('Settings saved');
+      if (res.ok) showToast('Settings saved successfully');
       else showToast(res.data.error, 'error');
     };
+    
     window.runCleanup = async () => {
+      if (!confirm('This will delete expired posts, old notifications, and stale data. Continue?')) return;
+      showToast('Running cleanup...', 'success');
       const res = await api('POST', '/admin/cleanup');
-      if (res.ok) showToast('Cleanup completed');
+      if (res.ok) showToast('Cleanup completed successfully');
       else showToast(res.data.error, 'error');
     };
 
+    // UI Interactions
     document.getElementById('hamburger').onclick = () => document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('profileBtn').onclick = () => { const d = document.getElementById('profileDropdown'); d.style.display = d.style.display === 'none' ? 'block' : 'none'; };
-    document.getElementById('logoutBtn').onclick = () => { localStorage.clear(); window.location.href = '/login.html'; };
-    document.getElementById('searchBtn').onclick = () => { window.location.href = '/explore.html'; };
+    document.getElementById('profileBtn').onclick = () => { 
+      const d = document.getElementById('profileDropdown'); 
+      d.style.display = d.style.display === 'none' ? 'block' : 'none'; 
+    };
+    document.getElementById('logoutBtn').onclick = () => { 
+      localStorage.clear(); 
+      window.location.href = '/login.html'; 
+    };
+    document.getElementById('searchBtn').onclick = () => { 
+      window.location.href = '/explore.html'; 
+    };
 
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#profileBtn') && !e.target.closest('#profileDropdown')) {
+        document.getElementById('profileDropdown').style.display = 'none';
+      }
+    });
+
+    // Initialize
     checkAuth().then(() => { loadDashboard(); });
   </script>
 </body>
