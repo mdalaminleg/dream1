@@ -1,0 +1,8 @@
+name = "reverb"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "REVERB_DB"
+database_name = "reverb-db"
+database_id = "fcc68768-dbed-4cac-99ba-9b7a429b0595"
