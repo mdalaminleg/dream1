@@ -100,6 +100,7 @@ async function runPruning(db) {
 
 // ---------- database initialization ----------
 async function ensureTables(db) {
+  // Users table
   await db.prepare(`CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY,
     email TEXT UNIQUE,
@@ -116,6 +117,7 @@ async function ensureTables(db) {
     created_at INTEGER
   )`).run();
 
+  // Posts table
   await db.prepare(`CREATE TABLE IF NOT EXISTS posts (
     id INTEGER PRIMARY KEY,
     user_id INTEGER,
@@ -131,52 +133,103 @@ async function ensureTables(db) {
     updated_at INTEGER
   )`).run();
 
+  // Likes table
   await db.prepare(`CREATE TABLE IF NOT EXISTS likes (
-    id INTEGER PRIMARY KEY, user_id INTEGER, post_id INTEGER, created_at INTEGER, UNIQUE(user_id, post_id)
+    id INTEGER PRIMARY KEY, 
+    user_id INTEGER, 
+    post_id INTEGER, 
+    created_at INTEGER, 
+    UNIQUE(user_id, post_id)
   )`).run();
 
+  // Comments table
   await db.prepare(`CREATE TABLE IF NOT EXISTS comments (
-    id INTEGER PRIMARY KEY, user_id INTEGER, post_id INTEGER, content TEXT, created_at INTEGER
+    id INTEGER PRIMARY KEY, 
+    user_id INTEGER, 
+    post_id INTEGER, 
+    content TEXT, 
+    created_at INTEGER
   )`).run();
 
+  // Echoes table
   await db.prepare(`CREATE TABLE IF NOT EXISTS echoes (
-    id INTEGER PRIMARY KEY, user_id INTEGER, post_id INTEGER, created_at INTEGER, UNIQUE(user_id, post_id)
+    id INTEGER PRIMARY KEY, 
+    user_id INTEGER, 
+    post_id INTEGER, 
+    created_at INTEGER, 
+    UNIQUE(user_id, post_id)
   )`).run();
 
+  // Reposts table
   await db.prepare(`CREATE TABLE IF NOT EXISTS reposts (
-    id INTEGER PRIMARY KEY, user_id INTEGER, original_post_id INTEGER, quote_text TEXT, created_at INTEGER
+    id INTEGER PRIMARY KEY, 
+    user_id INTEGER, 
+    original_post_id INTEGER, 
+    quote_text TEXT, 
+    created_at INTEGER
   )`).run();
 
+  // Follows table
   await db.prepare(`CREATE TABLE IF NOT EXISTS follows (
-    id INTEGER PRIMARY KEY, follower_id INTEGER, followee_id INTEGER, created_at INTEGER, UNIQUE(follower_id, followee_id)
+    id INTEGER PRIMARY KEY, 
+    follower_id INTEGER, 
+    followee_id INTEGER, 
+    created_at INTEGER, 
+    UNIQUE(follower_id, followee_id)
   )`).run();
 
+  // Notifications table
   await db.prepare(`CREATE TABLE IF NOT EXISTS notifications (
-    id INTEGER PRIMARY KEY, user_id INTEGER, type TEXT, actor_id INTEGER, post_id INTEGER, read INTEGER DEFAULT 0, created_at INTEGER
+    id INTEGER PRIMARY KEY, 
+    user_id INTEGER, 
+    type TEXT, 
+    actor_id INTEGER, 
+    post_id INTEGER, 
+    read INTEGER DEFAULT 0, 
+    created_at INTEGER
   )`).run();
 
+  // Hashtags tables
   await db.prepare(`CREATE TABLE IF NOT EXISTS hashtags (
-    id INTEGER PRIMARY KEY, tag TEXT UNIQUE
+    id INTEGER PRIMARY KEY, 
+    tag TEXT UNIQUE
   )`).run();
-
+  
   await db.prepare(`CREATE TABLE IF NOT EXISTS post_hashtags (
-    post_id INTEGER, hashtag_id INTEGER, PRIMARY KEY(post_id, hashtag_id)
+    post_id INTEGER, 
+    hashtag_id INTEGER, 
+    PRIMARY KEY(post_id, hashtag_id)
   )`).run();
 
+  // Mentions table
   await db.prepare(`CREATE TABLE IF NOT EXISTS mentions (
-    id INTEGER PRIMARY KEY, post_id INTEGER, mentioned_user_id INTEGER, created_at INTEGER
+    id INTEGER PRIMARY KEY, 
+    post_id INTEGER, 
+    mentioned_user_id INTEGER, 
+    created_at INTEGER
   )`).run();
 
+  // Whispers table
   await db.prepare(`CREATE TABLE IF NOT EXISTS whispers (
-    id INTEGER PRIMARY KEY, recipient_id INTEGER, content TEXT, answer TEXT, created_at INTEGER, expires_at INTEGER
+    id INTEGER PRIMARY KEY, 
+    recipient_id INTEGER, 
+    content TEXT, 
+    answer TEXT, 
+    created_at INTEGER, 
+    expires_at INTEGER
   )`).run();
 
+  // Banned words table
   await db.prepare(`CREATE TABLE IF NOT EXISTS banned_words (
-    id INTEGER PRIMARY KEY, word TEXT UNIQUE, language TEXT
+    id INTEGER PRIMARY KEY, 
+    word TEXT UNIQUE, 
+    language TEXT
   )`).run();
 
+  // Settings table
   await db.prepare(`CREATE TABLE IF NOT EXISTS settings (
-    key TEXT PRIMARY KEY, value TEXT
+    key TEXT PRIMARY KEY, 
+    value TEXT
   )`).run();
 
   // Indexes
@@ -185,11 +238,13 @@ async function ensureTables(db) {
   await db.prepare('CREATE INDEX IF NOT EXISTS idx_likes_post_id ON likes(post_id)').run();
   await db.prepare('CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id)').run();
   await db.prepare('CREATE INDEX IF NOT EXISTS idx_follows_follower ON follows(follower_id)').run();
+  await db.prepare('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)').run();
+  await db.prepare('CREATE INDEX IF NOT EXISTS idx_users_approved ON users(is_approved)').run();
 
-  // Seed banned words
+  // Seed banned words (English + Bangla)
   const defaultWords = [
-    'fuck','shit','cunt','motherfucker','vagina','porn','xxx','hacker','anal','doggy','cock','dick','pussy','whore','slut',
-    'চুদি','চোদাচুদি','মাদারচোদ','চোদা','হিজলা','বাংলা','চুদি'
+    'fuck', 'shit', 'cunt', 'motherfucker', 'vagina', 'porn', 'xxx', 'hacker', 'anal', 'doggy', 'cock', 'dick', 'pussy', 'whore', 'slut', 'asshole', 'bitch', 'bastard', 'damn',
+    'চুদি', 'চোদাচুদি', 'মাদারচোদ', 'চোদা', 'হিজলা', 'বাংলা', 'চুদি', 'পর্ন', 'হ্যাকার'
   ];
   for (const w of defaultWords) {
     await db.prepare('INSERT OR IGNORE INTO banned_words (word, language) VALUES (?, ?)').bind(w, 'auto').run();
@@ -198,18 +253,20 @@ async function ensureTables(db) {
   // Seed admin
   const adminEmail = 'alamin@mail.com';
   const adminPassHash = await sha256('admin3211');
+  const now = Math.floor(Date.now() / 1000);
   await db.prepare(`INSERT OR IGNORE INTO users (email, name, password_hash, role, is_approved, is_verified, created_at) 
-    VALUES (?, 'Admin', ?, 'admin', 1, 1, ?)`).bind(adminEmail, adminPassHash, Math.floor(Date.now()/1000)).run();
+    VALUES (?, 'Admin', ?, 'admin', 1, 1, ?)`).bind(adminEmail, adminPassHash, now).run();
 
   // Seed settings
   await db.prepare(`INSERT OR IGNORE INTO settings (key, value) VALUES ('imgbb_api_key', '')`).run();
 
   // Run pruning occasionally
-  if (Math.random() < 0.01) await runPruning(db);
+  if (Math.random() < 0.05) await runPruning(db);
 }
 
 // ---------- API handlers ----------
 async function handleAuth(method, path, body, db) {
+  // Register
   if (method === 'POST' && path === '/auth/register') {
     const { email, name, password, fingerprint } = body;
     if (!email || !name || !password) return err('Missing fields');
@@ -227,16 +284,26 @@ async function handleAuth(method, path, body, db) {
     return json({ message: 'Registered. Await admin approval.' }, 201);
   }
 
+  // Login
   if (method === 'POST' && path === '/auth/login') {
     const { email, password } = body;
-    const user = await db.prepare('SELECT id, email, name, role, password_hash, is_approved, is_banned FROM users WHERE email = ?').bind(email).first();
+    const user = await db.prepare('SELECT id, email, name, role, avatar_url, password_hash, is_approved, is_banned FROM users WHERE email = ?').bind(email).first();
     if (!user) return err('Invalid credentials', 401);
     if (user.is_banned) return err('Account banned', 403);
     if (user.is_approved !== 1 && user.role !== 'admin') return err('Awaiting admin approval', 403);
     const hash = await sha256(password);
     if (hash !== user.password_hash) return err('Invalid credentials', 401);
     const token = await signToken({ id: user.id, email: user.email, role: user.role });
-    return json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role } });
+    return json({ 
+      token, 
+      user: { 
+        id: user.id, 
+        email: user.email, 
+        name: user.name, 
+        role: user.role,
+        avatar_url: user.avatar_url
+      } 
+    });
   }
 
   return null;
@@ -250,6 +317,22 @@ async function handleUser(method, path, body, db, user, request) {
     return json(user);
   }
 
+  // Update profile (name, bio)
+  if (method === 'PUT' && path === '/user/profile') {
+    const { name, bio } = body;
+    if (name) await db.prepare('UPDATE users SET name = ? WHERE id = ?').bind(name, user.id).run();
+    if (bio !== undefined) await db.prepare('UPDATE users SET bio = ? WHERE id = ?').bind(bio, user.id).run();
+    return json({ success: true });
+  }
+
+  // Update avatar
+  if (method === 'PUT' && path === '/user/avatar') {
+    const { avatar_url } = body;
+    if (!avatar_url) return err('Avatar URL required');
+    await db.prepare('UPDATE users SET avatar_url = ? WHERE id = ?').bind(avatar_url, user.id).run();
+    return json({ success: true, avatar_url });
+  }
+
   // Update mood
   if (method === 'PUT' && path === '/user/mood') {
     const { mood } = body;
@@ -258,20 +341,19 @@ async function handleUser(method, path, body, db, user, request) {
     return json({ success: true });
   }
 
-  // Update avatar/bio
-  if (method === 'PUT' && path === '/user/profile') {
-    const { avatar_url, bio } = body;
-    if (avatar_url) await db.prepare('UPDATE users SET avatar_url = ? WHERE id = ?').bind(avatar_url, user.id).run();
-    if (bio !== undefined) await db.prepare('UPDATE users SET bio = ? WHERE id = ?').bind(bio, user.id).run();
-    return json({ success: true });
-  }
-
-  // Get user profile
+  // Get user profile by ID
   if (method === 'GET' && path.match(/^\/user\/profile\/(\d+)$/)) {
     const id = parseInt(path.split('/').pop());
     const profile = await db.prepare('SELECT id, name, avatar_url, bio, mood, is_verified FROM users WHERE id = ?').bind(id).first();
     if (!profile) return err('Not found', 404);
     return json(profile);
+  }
+
+  // Check if following
+  if (method === 'GET' && path.match(/^\/user\/following\/(\d+)$/)) {
+    const followeeId = parseInt(path.split('/').pop());
+    const follow = await db.prepare('SELECT id FROM follows WHERE follower_id = ? AND followee_id = ?').bind(user.id, followeeId).first();
+    return json({ following: !!follow });
   }
 
   // Follow/unfollow
@@ -303,7 +385,7 @@ async function handleUser(method, path, body, db, user, request) {
       SELECT p.*, u.name, u.avatar_url, u.is_verified 
       FROM posts p 
       JOIN users u ON p.user_id = u.id 
-      WHERE p.user_id IN (${placeholders}) 
+      WHERE p.user_id IN (${placeholders}) AND u.is_banned = 0
       ORDER BY p.created_at DESC 
       LIMIT ? OFFSET ?
     `).bind(...followIds, limit, offset).all();
@@ -314,15 +396,20 @@ async function handleUser(method, path, body, db, user, request) {
   if (method === 'POST' && path === '/posts') {
     const { content, imageUrl, isCapsule, expiresInDays } = body;
     if (!content && !imageUrl) return err('Content or image required');
+    
+    // Daily post limit (admin exempt)
     if (user.role !== 'admin') {
       const todayStart = Math.floor(new Date().setHours(0,0,0,0) / 1000);
       const count = await db.prepare('SELECT COUNT(*) as cnt FROM posts WHERE user_id = ? AND created_at >= ?').bind(user.id, todayStart).first();
       if (count.cnt >= 5) return err('Daily post limit reached (5)', 429);
     }
+    
+    // Profanity check (admin exempt)
     if (user.role !== 'admin' && (await hasProfanity(content, db))) {
       await autoBanUser(user.id, db, 'Profanity in post');
       return err('You have been banned for inappropriate content', 403);
     }
+    
     const now = Math.floor(Date.now() / 1000);
     let expiresAt = null;
     if (isCapsule && expiresInDays) {
@@ -341,8 +428,8 @@ async function handleUser(method, path, body, db, user, request) {
       const tagClean = tag.slice(1).toLowerCase();
       let ht = await db.prepare('SELECT id FROM hashtags WHERE tag = ?').bind(tagClean).first();
       if (!ht) {
-        const insert = await db.prepare('INSERT INTO hashtags (tag) VALUES (?) RETURNING id').bind(tagClean).first();
-        ht = insert || await db.prepare('SELECT id FROM hashtags WHERE tag = ?').bind(tagClean).first();
+        await db.prepare('INSERT INTO hashtags (tag) VALUES (?)').bind(tagClean).run();
+        ht = await db.prepare('SELECT id FROM hashtags WHERE tag = ?').bind(tagClean).first();
       }
       if (ht) await db.prepare('INSERT OR IGNORE INTO post_hashtags (post_id, hashtag_id) VALUES (?, ?)').bind(postId, ht.id).run();
     }
@@ -359,7 +446,7 @@ async function handleUser(method, path, body, db, user, request) {
       }
     }
     
-    return json({ id: postId });
+    return json({ id: postId, success: true });
   }
 
   // Delete post
@@ -380,7 +467,7 @@ async function handleUser(method, path, body, db, user, request) {
     if (existing) {
       await db.prepare('DELETE FROM likes WHERE user_id = ? AND post_id = ?').bind(user.id, postId).run();
       await db.prepare('UPDATE posts SET like_count = like_count - 1 WHERE id = ?').bind(postId).run();
-      return json({ liked: false });
+      return json({ liked: false, count: (await db.prepare('SELECT like_count FROM posts WHERE id = ?').bind(postId).first()).like_count });
     } else {
       await db.prepare('INSERT INTO likes (user_id, post_id, created_at) VALUES (?, ?, ?)').bind(user.id, postId, now).run();
       await db.prepare('UPDATE posts SET like_count = like_count + 1 WHERE id = ?').bind(postId).run();
@@ -389,7 +476,7 @@ async function handleUser(method, path, body, db, user, request) {
         await db.prepare('INSERT INTO notifications (user_id, type, actor_id, post_id, created_at) VALUES (?, ?, ?, ?, ?)')
           .bind(postOwner.user_id, 'like', user.id, postId, now).run();
       }
-      return json({ liked: true });
+      return json({ liked: true, count: (await db.prepare('SELECT like_count FROM posts WHERE id = ?').bind(postId).first()).like_count });
     }
   }
 
@@ -414,7 +501,39 @@ async function handleUser(method, path, body, db, user, request) {
     return json({ success: true });
   }
 
-  // Explore (global posts with hotness sorting)
+  // Get comments for a post
+  if (method === 'GET' && path.match(/^\/posts\/(\d+)\/comments$/)) {
+    const postId = parseInt(path.split('/')[2]);
+    const comments = await db.prepare(`
+      SELECT c.*, u.name as user_name, u.avatar_url 
+      FROM comments c 
+      JOIN users u ON c.user_id = u.id 
+      WHERE c.post_id = ? 
+      ORDER BY c.created_at DESC
+    `).bind(postId).all();
+    return json({ comments: comments.results });
+  }
+
+  // Add comment
+  if (method === 'POST' && path === '/comments') {
+    const { post_id, content } = body;
+    if (!content) return err('Comment content required');
+    if (user.role !== 'admin' && await hasProfanity(content, db)) {
+      return err('Comment contains inappropriate language', 403);
+    }
+    const now = Math.floor(Date.now() / 1000);
+    await db.prepare('INSERT INTO comments (user_id, post_id, content, created_at) VALUES (?, ?, ?, ?)')
+      .bind(user.id, post_id, content, now).run();
+    await db.prepare('UPDATE posts SET comment_count = comment_count + 1 WHERE id = ?').bind(post_id).run();
+    const postOwner = await db.prepare('SELECT user_id FROM posts WHERE id = ?').bind(post_id).first();
+    if (postOwner && postOwner.user_id !== user.id) {
+      await db.prepare('INSERT INTO notifications (user_id, type, actor_id, post_id, created_at) VALUES (?, ?, ?, ?, ?)')
+        .bind(postOwner.user_id, 'comment', user.id, post_id, now).run();
+    }
+    return json({ success: true });
+  }
+
+  // Explore (global hot posts)
   if (method === 'GET' && path === '/explore') {
     const url = new URL(request.url);
     const limit = parseInt(url.searchParams.get('limit') || '20');
@@ -449,6 +568,17 @@ async function handleUser(method, path, body, db, user, request) {
     return json({ posts: posts.results, users: users.results });
   }
 
+  // Trending hashtags
+  if (method === 'GET' && path === '/hashtags/trending') {
+    const posts = await db.prepare(`
+      SELECT h.tag, COUNT(*) as count 
+      FROM hashtags h
+      JOIN post_hashtags ph ON h.id = ph.hashtag_id
+      GROUP BY h.tag ORDER BY count DESC LIMIT 10
+    `).all();
+    return json({ hashtags: posts.results });
+  }
+
   // Notifications
   if (method === 'GET' && path === '/notifications') {
     const notifs = await db.prepare(`
@@ -461,39 +591,48 @@ async function handleUser(method, path, body, db, user, request) {
     return json({ notifications: notifs.results });
   }
 
+  // Mark all notifications as read
   if (method === 'POST' && path === '/notifications/read') {
     await db.prepare('UPDATE notifications SET read = 1 WHERE user_id = ?').bind(user.id).run();
     return json({ success: true });
   }
 
-  // Whispers
-  if (method === 'GET' && path === '/whispers/inbox') {
-    const whispers = await db.prepare(`
-      SELECT id, content, answer, created_at FROM whispers 
-      WHERE recipient_id = ? AND expires_at > ? ORDER BY created_at DESC
-    `).bind(user.id, Math.floor(Date.now() / 1000)).all();
-    return json({ whispers: whispers.results });
-  }
-
-  if (method === 'POST' && path === '/whispers') {
-    const { recipient_id, content } = body;
-    if (!recipient_id || !content) return err('Missing fields');
-    const recipient = await db.prepare('SELECT id FROM users WHERE id = ?').bind(recipient_id).first();
-    if (!recipient) return err('User not found', 404);
-    const now = Math.floor(Date.now() / 1000);
-    const expiresAt = now + 7 * 86400;
-    await db.prepare('INSERT INTO whispers (recipient_id, content, created_at, expires_at) VALUES (?, ?, ?, ?)')
-      .bind(recipient_id, content, now, expiresAt).run();
+  // Mark single notification as read
+  if (method === 'POST' && path.match(/^\/notifications\/(\d+)\/read$/)) {
+    const notifId = parseInt(path.split('/')[2]);
+    await db.prepare('UPDATE notifications SET read = 1 WHERE id = ? AND user_id = ?').bind(notifId, user.id).run();
     return json({ success: true });
   }
 
-  if (method === 'POST' && path.match(/^\/whispers\/(\d+)\/answer$/)) {
-    const whisperId = parseInt(path.split('/')[2]);
-    const { answer } = body;
-    const whisper = await db.prepare('SELECT recipient_id FROM whispers WHERE id = ?').bind(whisperId).first();
-    if (!whisper || whisper.recipient_id !== user.id) return err('Forbidden', 403);
-    await db.prepare('UPDATE whispers SET answer = ? WHERE id = ?').bind(answer, whisperId).run();
-    return json({ success: true });
+  // Image upload via ImgBB
+  if (method === 'POST' && path === '/upload/image') {
+    const { image } = body;
+    if (!image) return err('No image provided');
+    
+    const apiKeySetting = await db.prepare("SELECT value FROM settings WHERE key = 'imgbb_api_key'").first();
+    const apiKey = apiKeySetting?.value;
+    
+    if (!apiKey) return err('ImgBB API key not configured. Please add it in admin settings.', 400);
+    
+    try {
+      const formData = new FormData();
+      formData.append('image', image);
+      formData.append('key', apiKey);
+      
+      const response = await fetch('https://api.imgbb.com/1/upload', {
+        method: 'POST',
+        body: formData
+      });
+      
+      const result = await response.json();
+      if (result.success) {
+        return json({ url: result.data.url });
+      } else {
+        return err('Image upload failed: ' + (result.error?.message || 'Unknown error'), 400);
+      }
+    } catch (error) {
+      return err('Image upload failed: ' + error.message, 500);
+    }
   }
 
   return err('Not found', 404);
@@ -502,9 +641,9 @@ async function handleUser(method, path, body, db, user, request) {
 async function handleAdmin(method, path, body, db, user) {
   if (!user || user.role !== 'admin') return err('Forbidden', 403);
 
-  // List users
+  // Get all users
   if (method === 'GET' && path === '/admin/users') {
-    const users = await db.prepare('SELECT id, email, name, role, is_approved, is_banned, is_verified FROM users').all();
+    const users = await db.prepare('SELECT id, email, name, role, avatar_url, bio, is_approved, is_banned, is_verified, created_at FROM users ORDER BY created_at DESC').all();
     return json({ users: users.results });
   }
 
@@ -544,9 +683,20 @@ async function handleAdmin(method, path, body, db, user) {
     return json({ success: true });
   }
 
+  // Get all posts (admin view)
+  if (method === 'GET' && path === '/admin/posts') {
+    const posts = await db.prepare(`
+      SELECT p.*, u.name as user_name, u.email as user_email
+      FROM posts p 
+      JOIN users u ON p.user_id = u.id 
+      ORDER BY p.created_at DESC LIMIT 100
+    `).all();
+    return json({ posts: posts.results });
+  }
+
   // Banned words management
   if (method === 'GET' && path === '/admin/banned-words') {
-    const words = await db.prepare('SELECT word, language FROM banned_words').all();
+    const words = await db.prepare('SELECT word, language FROM banned_words ORDER BY word').all();
     return json({ words: words.results });
   }
 
@@ -582,7 +732,50 @@ async function handleAdmin(method, path, body, db, user) {
     const userCount = await db.prepare('SELECT COUNT(*) as count FROM users').first();
     const postCount = await db.prepare('SELECT COUNT(*) as count FROM posts').first();
     const pendingApprovals = await db.prepare('SELECT COUNT(*) as count FROM users WHERE is_approved = 0 AND role = "user"').first();
-    return json({ users: userCount.count, posts: postCount.count, pendingApprovals: pendingApprovals.count });
+    const bannedUsers = await db.prepare('SELECT COUNT(*) as count FROM users WHERE is_banned = 1').first();
+    return json({ 
+      users: userCount.count, 
+      posts: postCount.count, 
+      pendingApprovals: pendingApprovals.count,
+      bannedUsers: bannedUsers.count
+    });
+  }
+
+  // Recent activities
+  if (method === 'GET' && path === '/admin/recent-activities') {
+    const recentUsers = await db.prepare(`
+      SELECT id, name, email, created_at, 'user_register' as type 
+      FROM users 
+      ORDER BY created_at DESC LIMIT 10
+    `).all();
+    
+    const recentPosts = await db.prepare(`
+      SELECT p.id, p.content, p.created_at, u.name as user_name, 'post_created' as type 
+      FROM posts p 
+      JOIN users u ON p.user_id = u.id 
+      ORDER BY p.created_at DESC LIMIT 10
+    `).all();
+    
+    const activities = [];
+    for (const u of recentUsers.results) {
+      activities.push({
+        type: 'user_register',
+        description: `New user registered: ${u.name} (${u.email})`,
+        created_at: u.created_at,
+        user_id: u.id
+      });
+    }
+    for (const p of recentPosts.results) {
+      activities.push({
+        type: 'post_created',
+        description: `${p.user_name} created: "${p.content.substring(0, 60)}${p.content.length > 60 ? '...' : ''}"`,
+        created_at: p.created_at,
+        post_id: p.id
+      });
+    }
+    
+    activities.sort((a, b) => b.created_at - a.created_at);
+    return json({ activities: activities.slice(0, 15) });
   }
 
   // Manual cleanup
@@ -599,6 +792,7 @@ export async function onRequest(context) {
   const { request, env } = context;
   const db = env.REVERB_DB;
 
+  // Handle CORS preflight
   if (request.method === 'OPTIONS') {
     return new Response(null, { 
       status: 204, 
@@ -624,13 +818,13 @@ export async function onRequest(context) {
     globalThis.__tablesReady = true;
   }
 
-  // Auth routes
+  // Auth routes (no user needed)
   if (path.startsWith('/auth/')) {
     const res = await handleAuth(method, path, body, db);
     if (res) return res;
   }
 
-  // Protected routes
+  // Protected routes - get user
   const user = await getUser(request, db);
   if (!user && !path.startsWith('/auth/')) {
     return err('Unauthorized', 401);
